@@ -1,0 +1,29 @@
+{
+  "name": "newtechnology",
+  "version": "1.0.0",
+  "description": "mean application",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VuThien3010/NewTechnology.git"
+  },
+  "keywords": [
+    "MEAN",
+    "stack"
+  ],
+  "author": "Thien_17110075",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VuThien3010/NewTechnology/issues"
+  },
+  "homepage": "https://github.com/VuThien3010/NewTechnology#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.10.16",
+    "morgan": "^1.10.0"
+  }
+}

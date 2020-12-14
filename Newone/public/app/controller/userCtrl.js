@@ -1,9 +1,10 @@
+
 angular.module('userControllers', ['userServices'])
     .controller('regCtrl', function ($http, $location, $timeout, User) {
 
         var app = this;
 
-        this.regUser = function () {
+        this.regUser = function (regData) {
             app.loading = true;
             app.errorMsg = false;
 
@@ -15,9 +16,9 @@ angular.module('userControllers', ['userServices'])
                     //create success message
                     app.successMsg = data.data.message + ' Redirecting.....';
                     //redirect to homepage
-                    $timeout(function(){
+                    $timeout(function () {
                         $location.path('/');
-                    },2000);
+                    }, 2000);
                 } else {
                     app.loading = false;
                     //create fail message;
@@ -25,4 +26,16 @@ angular.module('userControllers', ['userServices'])
                 }
             });
         };
+    })
+    .controller('facebookCtrl', function ($routeParams, Auth, $location, $window) {
+        //AuthfacebookToken
+        var app = this;
+
+        if ($window.location.pathname == '/facebookerror') {
+            app.errorMsg = 'Facebook email not found in database';
+        } else {
+            Auth.facebook($routeParams.token);
+            $location.path('/');
+        }
+
     });

@@ -1,12 +1,14 @@
-var express = require("express");
+var express = require('express');
 var app = express();
 var port = process.env.PORT || 8080;
-var morgan = require("morgan");
-var moongose = require("mongoose");
-var bodyParser = require("body-parser");
+var morgan = require('morgan');
+var moongose = require('mongoose');
+var bodyParser = require('body-parser');
 var router = express.Router();
-var appRoutes = require("./app/routes/api")(router);
+var appRoutes = require('./app/routes/api')(router);
 var path = require('path');
+var passport = require('passport');
+var social = require('./app/passport/passport')(app, passport);
 //middle ware
 app.use(morgan("dev"));
 app.use(bodyParser.json());
@@ -15,7 +17,7 @@ app.use(express.static(__dirname + '/public/'));
 app.use('/api',appRoutes);
 
 
-moongose.connect("mongodb://localhost:27017/tutorial", function () {
+moongose.connect('mongodb://localhost:27017/tutorial', function () {
   if (err) {
     console.log("Not connect to the database" + err);
   } else {
@@ -26,5 +28,5 @@ app.get('*', function(req,res){
     res.sendFile(path.join(__dirname + '/public/app/views/index.html'));
 });
 app.listen(port, function () {
-  console.log("Running on port " + port);
+  console.log('Running on port ' + port);
 });

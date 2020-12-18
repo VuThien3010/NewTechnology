@@ -38,4 +38,18 @@ angular.module('userControllers', ['userServices'])
             $location.path('/');
         }
 
+    })
+
+    .controller('googleCtrl', function ($routeParams, Auth, $location, $window) {
+        //AuthfacebookToken
+        var app = this;
+
+        if ($window.location.pathname == '/googleerror') {
+            app.errorMsg = 'Google email not found in database';
+        } else {
+            Auth.facebook($routeParams.token);
+            $location.path('/');
+        }
+
     });
+

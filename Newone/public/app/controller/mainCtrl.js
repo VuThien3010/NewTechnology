@@ -19,14 +19,21 @@ angular.module('mainController', ['authServices'])
                 app.username = '';
                 app.loadme = true;
             }
-            if($location.hash() == '_=_') $location.hash(null);
+            if ($location.hash() == '_=_') $location.hash(null);
         });
 
-this.facebook = function(){
-//   console.log($window.location.host); localhost:8080
-//   console.log($window.location.protocol); http:
-  $window.location = $window.location.protocol + '//' + $window.location.host + '/auth/facebook';
-};
+        this.facebook = function () {
+            //   console.log($window.location.host); localhost:8080
+            //   console.log($window.location.protocol); http:
+            $window.location = $window.location.protocol + '//' + $window.location.host + '/auth/facebook';
+        };
+
+        this.google = function () {
+            //   console.log($window.location.host); localhost:8080
+            //   console.log($window.location.protocol); http:
+            $window.location = $window.location.protocol + '//' + $window.location.host + '/auth/google';
+        };
+
         this.doLogin = function (loginData) {
             app.loading = true;
             app.errorMsg = false;

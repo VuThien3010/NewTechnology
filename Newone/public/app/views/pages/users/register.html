@@ -2,6 +2,11 @@
     <h1>User registration</h1>
 </div>
 <form ng-submit="register.regUser(regData);">
+
+    <!--Name-->
+    <label>Name:</label>
+    <input class="form-control" type="text" name="name" placeholder="Please enter name" ng-model="register.regData.name" >
+    <br>
     <!--Email-->
     <label>Email:</label>
     <input class="form-control" type="text" name="email" placeholder="Please enter email" ng-model="register.regData.email" >

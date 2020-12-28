@@ -18,6 +18,8 @@
 
 <br>
 
+
+
 <div class="jumbotron text-center" ng-show="main.loading">
     <span class="glyphicon glyphicon-repeat spinner"></span>
     <p>Loading.....</p>
@@ -32,7 +34,8 @@
 <br>
 
 <div class="row show-hide-message" ng-show="main.errorMsg">
-    <div class="alert alert-danger">{{main.errorMsg}}</div>
+    <!-- &nbsp<a href="/resend"><button type="button" class="btn btn-success">Resend Activation Link</button></a> -->
+<div class="alert alert-danger">{{main.errorMsg}}</div>
 </div>
 
 <div class="row show-hide-message" ng-show="facebook.errorMsg">

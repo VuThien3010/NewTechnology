@@ -16,7 +16,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public/'));
 app.use('/api',appRoutes);
 
-
 moongose.connect('mongodb://localhost:27017/tutorial', function () {
   if (err) {
     console.log("Not connect to the database" + err);

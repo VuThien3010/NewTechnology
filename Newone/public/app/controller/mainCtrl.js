@@ -21,16 +21,16 @@ angular.module('mainController', ['authServices', 'userServices'])
                         }
                         var expireTime = self.parseJwt(token);
                         var timeStamp = Math.floor(Date.now() / 1000);
-                        console.log(expireTime.exp);
-                        console.log(timeStamp);
+                        //console.log(expireTime.exp);
+                        //console.log(timeStamp);
                         var timeCheck = expireTime.exp - timeStamp;
-                        console.log('timecheck: ' + timeCheck);
+                        //console.log('timecheck: ' + timeCheck);
                         if (timeCheck <= 25) {
-                            console.log('Token has expired');
+                            //console.log('Token has expired');
                             showModal(1);
                             $interval.cancel(interval);
                         } else {
-                            console.log('token not yet expired');
+                            //console.log('token not yet expired');
                         }
                     }
                 }, 2000);
@@ -45,7 +45,7 @@ angular.module('mainController', ['authServices', 'userServices'])
             app.hideButton = false;
             if (option === 1) {
                 app.modalHeader = 'Timeout warning';
-                app.modalBody = 'Your session will be expired in 5 minutes. Would you like to renew your session?';
+                app.modalBody = 'Your session will be expired in 3 minutes. Would you like to renew your session?';
                 $("#myModal").modal({ backdrop: "static" });
             } else if (option === 2) {
                 app.hideButton = true;
@@ -102,6 +102,15 @@ angular.module('mainController', ['authServices', 'userServices'])
                 Auth.getUser().then(function (data) {
                     app.username = data.data.username;
                     app.useremail = data.data.email;
+                    User.getPermission().then(function (data) {
+                        if (data.data.permission === 'admin' || data.data.permission === 'moderator') {
+                            app.authorized = true;
+                            app.loadme = true;
+                        } else {
+                            app.loadme = true;
+
+                        }
+                    });
                     app.loadme = true;
                 });
             } else {

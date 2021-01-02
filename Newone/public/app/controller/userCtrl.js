@@ -15,7 +15,7 @@ angular.module('userControllers', ['userServices'])
                         app.successMsg = data.data.message + ' Redirecting.....';
                         //redirect to homepage
                         $timeout(function () {
-                            $location.path('/');
+                            $location.path('/login');
                         }, 2000);
                     } else {
                         app.loading = false;
@@ -37,7 +37,7 @@ angular.module('userControllers', ['userServices'])
             User.checkUsername(app.regData).then(function (data) {
                 if (data.data.success) {
                     app.checkingkUsername = false;
-                    app.usernameInvalid = false;
+                    //app.usernameInvalid = false;
                     app.usernameMsg = data.data.message;
                 } else {
                     app.checkingkUsername = false;
@@ -55,7 +55,7 @@ angular.module('userControllers', ['userServices'])
             User.checkEmail(app.regData).then(function (data) {
                 if (data.data.success) {
                     app.checkingEmail = false;
-                    app.emailInvalid = false;
+                    //app.emailInvalid = false;
                     app.emailMsg = data.data.message;
                 } else {
                     app.checkingEmail = false;

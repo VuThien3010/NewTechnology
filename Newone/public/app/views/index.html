@@ -18,6 +18,7 @@
     <!-- Controllers -->
     <script src="app/controller/userCtrl.js"></script>
     <script src="app/controller/mainCtrl.js"></script>
+    <script src="app/controller/managementCtrl.js"></script>
 
     <!--Services-->
     <script src="app/services/userServices.js"></script>
@@ -63,6 +64,11 @@
             <li>
               <a ng-show="main.isLoggedIn" href="#" ng-click="main.logout();"
                 >Logout</a
+              >
+            </li>
+            <li>
+              <a ng-show="main.isLoggedIn && main.authorized" href="/management"
+                >Management</a
               >
             </li>
             <li class="dropdown">

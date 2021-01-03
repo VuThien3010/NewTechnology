@@ -1,6 +1,6 @@
 angular
-    .module("managementController", [])
-    .controller("managementCtrl", function (User, $scope) {
+    .module('managementController', [])
+    .controller('managementCtrl', function (User, $scope) {
         var app = this;
         app.loading = true;
         app.accessDenied = true;
@@ -8,6 +8,7 @@ angular
         app.editAccess = false;
         app.deleteAccess = false;
         app.limit = 5;
+        app.searchLimit = 0;
 
         // Function: get all the users from database
         function getUsers() {
@@ -17,21 +18,21 @@ angular
                 if (data.data.success) {
                     // Check which permissions the logged in user has
                     if (
-                        data.data.permission === "admin" ||
-                        data.data.permission === "moderator"
+                        data.data.permission === 'admin' ||
+                        data.data.permission === 'moderator'
                     ) {
                         app.users = data.data.users; // Assign users from database to variable
                         app.loading = false; // Stop loading icon
                         app.accessDenied = false; // Show table
                         // Check if logged in user is an admin or moderator
-                        if (data.data.permission === "admin") {
+                        if (data.data.permission === 'admin') {
                             app.editAccess = true; // Show edit button
                             app.deleteAccess = true; // Show delete button
-                        } else if (data.data.permission === "moderator") {
+                        } else if (data.data.permission === 'moderator') {
                             app.editAccess = true; // Show edit button
                         }
                     } else {
-                        app.errorMsg = "Insufficient Permissions"; // Reject edit and delete options
+                        app.errorMsg = 'Insufficient Permissions'; // Reject edit and delete options
                         app.loading = false; // Stop loading icon
                     }
                 } else {
@@ -48,7 +49,7 @@ angular
             if (number > 0) {
                 app.limit = number;
             } else {
-                app.showMoreError = "Please enter a valid number";
+                app.showMoreError = 'Please enter a valid number';
             }
         };
 
@@ -66,11 +67,56 @@ angular
                 }
             });
         };
+
+        app.search = function (searchKeyword, number) {
+            if (searchKeyword) {
+                if (searchKeyword.length > 0) {
+                    app.limit = 0;
+                    $scope.searchFilter = searchKeyword;
+                    app.limit = number;
+                } else {
+                    $scope.searchFilter = undefined;
+                    app.limit = 0;
+                }
+            } else {
+                $scope.searchFilter = undefined;
+                app.limit = 0;
+            }
+        };
+
+        app.clear = function () {
+            $scope.number = 'Clear';
+            app.limit = 0;
+            $scope.searchKeyword;
+            $scope.searchFilter;
+            app.showMoreError = false;
+        };
+
+        // Function: Perform an advanced, criteria-based search
+        app.advancedSearch = function (searchByUsername, searchByEmail, searchByName) {
+            if (searchByUsername || searchByEmail || searchByName) {
+                $scope.advancedSearchFilter = {};
+                if (searchByUsername) {
+                    $scope.advancedSearchFilter.username = searchByUsername;
+                }
+                if (searchByEmail) {
+                    $scope.advancedSearchFilter.email = searchByEmail;
+                }
+                if (searchByName) {
+                    $scope.advancedSearchFilter.name = searchByName;
+                }
+                app.searchLimit = undefined;
+            }
+        };
+
+        app.sortOrder = function(order) {
+            app.sort = order;
+        };
     })
 
-    .controller("editCtrl", function ($scope, $routeParams, User, $timeout) {
+    .controller('editCtrl', function ($scope, $routeParams, User, $timeout) {
         var app = this;
-        $scope.nameTab = "active"; // Set the 'name' tab to the default active tab
+        $scope.nameTab = 'active'; // Set the 'name' tab to the default active tab
         app.phase1 = true; //
 
         // Function: get the user that needs to be edited
@@ -84,15 +130,15 @@ angular
                 app.currentUser = data.data.user._id; // Get user's _id for update functions
             } else {
                 app.errorMsg = data.data.message; // Set error message
-                $scope.alert = "alert alert-danger"; // Set class for message
+                $scope.alert = 'alert alert-danger'; // Set class for message
             }
         });
 
         app.namePhase = function () {
-            $scope.nameTab = "active";
-            $scope.usernameTab = "default";
-            $scope.emailTab = "default";
-            $scope.permissionTab = "default";
+            $scope.nameTab = 'active';
+            $scope.usernameTab = 'default';
+            $scope.emailTab = 'default';
+            $scope.permissionTab = 'default';
             app.phase1 = true;
             app.phase2 = false;
             app.phase3 = false;
@@ -101,10 +147,10 @@ angular
         };
 
         app.emailPhase = function () {
-            $scope.nameTab = "default";
-            $scope.usernameTab = "default";
-            $scope.emailTab = "active";
-            $scope.permissionTab = "default";
+            $scope.nameTab = 'default';
+            $scope.usernameTab = 'default';
+            $scope.emailTab = 'active';
+            $scope.permissionTab = 'default';
             app.phase1 = false;
             app.phase2 = false;
             app.phase3 = true;
@@ -113,10 +159,10 @@ angular
         };
 
         app.usernamePhase = function () {
-            $scope.nameTab = "default";
-            $scope.usernameTab = "active";
-            $scope.emailTab = "default";
-            $scope.permissionTab = "default";
+            $scope.nameTab = 'default';
+            $scope.usernameTab = 'active';
+            $scope.emailTab = 'default';
+            $scope.permissionTab = 'default';
             app.phase1 = false;
             app.phase2 = true;
             app.phase3 = false;
@@ -125,10 +171,10 @@ angular
         };
 
         app.permissionPhase = function () {
-            $scope.nameTab = "default";
-            $scope.usernameTab = "default";
-            $scope.emailTab = "default";
-            $scope.permissionTab = "active";
+            $scope.nameTab = 'default';
+            $scope.usernameTab = 'default';
+            $scope.emailTab = 'default';
+            $scope.permissionTab = 'active';
             app.phase1 = false;
             app.phase2 = false;
             app.phase3 = false;
@@ -138,11 +184,11 @@ angular
             app.disableAdmin = false;
             app.errorMsg = false;
 
-            if ($scope.newPermission === "user") {
+            if ($scope.newPermission === 'user') {
                 app.disableUser = true;
-            } else if ($scope.newPermission === "moderator") {
+            } else if ($scope.newPermission === 'moderator') {
                 app.disableModerator = true;
-            } else if ($scope.newPermission === "admin") {
+            } else if ($scope.newPermission === 'admin') {
                 app.disableAdmin = true;
             }
         };
@@ -156,7 +202,7 @@ angular
                 userObject.name = $scope.newName;
                 User.editUser(userObject).then(function (data) {
                     if (data.data.success) {
-                        $scope.alert = "alert alert-success"; // Set class for message
+                        $scope.alert = 'alert alert-success'; // Set class for message
                         app.successMsg = data.data.message;
                         $timeout(function () {
                             app.nameForm.name.$setPristine();
@@ -165,14 +211,14 @@ angular
                             app.disable = false;
                         }, 2000);
                     } else {
-                        $scope.alert = "alert alert-danger"; // Set class for message
+                        $scope.alert = 'alert alert-danger'; // Set class for message
                         app.errorMsg = data.data.message;
                         app.disable = false;
                     }
                 });
             } else {
-                $scope.alert = "alert alert-danger"; // Set class for message
-                app.errorMsg = "Please ensure form is filled out properly";
+                $scope.alert = 'alert alert-danger'; // Set class for message
+                app.errorMsg = 'Please ensure form is filled out properly';
                 app.disable = false;
             }
         };
@@ -186,7 +232,7 @@ angular
                 userObject.email = $scope.newEmail;
                 User.editUser(userObject).then(function (data) {
                     if (data.data.success) {
-                        $scope.alert = "alert alert-success"; // Set class for message
+                        $scope.alert = 'alert alert-success'; // Set class for message
                         app.successMsg = data.data.message; // Set success message
                         // Function: After two seconds, clear and re-enable
                         $timeout(function () {
@@ -196,14 +242,14 @@ angular
                             app.disabled = false; // Enable form for editing
                         }, 2000);
                     } else {
-                        $scope.alert = "alert alert-danger"; // Set class for message
+                        $scope.alert = 'alert alert-danger'; // Set class for message
                         app.errorMsg = data.data.message;
                         app.disable = false;
                     }
                 });
             } else {
-                $scope.alert = "alert alert-danger"; // Set class for message
-                app.errorMsg = "Please ensure form is filled out properly";
+                $scope.alert = 'alert alert-danger'; // Set class for message
+                app.errorMsg = 'Please ensure form is filled out properly';
                 app.disable = false;
             }
         };
@@ -217,7 +263,7 @@ angular
                 userObject.username = $scope.newUsername;
                 User.editUser(userObject).then(function (data) {
                     if (data.data.success) {
-                        $scope.alert = "alert alert-success"; // Set class for message
+                        $scope.alert = 'alert alert-success'; // Set class for message
                         app.successMsg = data.data.message;
                         $timeout(function () {
                             app.usernameForm.username.$setPristine();
@@ -226,14 +272,14 @@ angular
                             app.disable = false;
                         }, 2000);
                     } else {
-                        $scope.alert = "alert alert-danger"; // Set class for message
+                        $scope.alert = 'alert alert-danger'; // Set class for message
                         app.errorMsg = data.data.message;
                         app.disable = false;
                     }
                 });
             } else {
-                $scope.alert = "alert alert-danger"; // Set class for message
-                app.errorMsg = "Please ensure form is filled out properly";
+                $scope.alert = 'alert alert-danger'; // Set class for message
+                app.errorMsg = 'Please ensure form is filled out properly';
                 app.disable = false;
             }
         };
@@ -250,40 +296,34 @@ angular
             User.editUser(userObject).then(function (data) {
                 // Check if was able to edit user
                 if (data.data.success) {
-                    $scope.alert = "alert alert-success"; // Set class for message
+                    $scope.alert = 'alert alert-success'; // Set class for message
                     app.successMsg = data.data.message; // Set success message
                     // Function: After two seconds, clear and re-enable
                     $timeout(function () {
                         app.successMsg = false; // Set success message
                         $scope.newPermission = newPermission; // Set the current permission variable
                         // Check which permission was assigned to the user
-                        if (newPermission === "user") {
+                        if (newPermission === 'user') {
                             app.disableUser = true; // Lock the 'user' button
                             app.disableModerator = false; // Unlock the 'moderator' button
                             app.disableAdmin = false; // Unlock the 'admin' button
-                        } else if (newPermission === "moderator") {
+                        } else if (newPermission === 'moderator') {
                             app.disableModerator = true; // Lock the 'moderator' button
                             app.disableUser = false; // Unlock the 'user' button
                             app.disableAdmin = false; // Unlock the 'admin' button
-                        } else if (newPermission === "admin") {
+                        } else if (newPermission === 'admin') {
                             app.disableAdmin = true; // Lock the 'admin' buton
                             app.disableModerator = false; // Unlock the 'moderator' button
                             app.disableUser = false; // unlock the 'user' button
                         }
                     }, 2000);
                 } else {
-                    $scope.alert = "alert alert-danger"; // Set class for message
+                    $scope.alert = 'alert alert-danger'; // Set class for message
                     app.errorMsg = data.data.message; // Set error message
                     app.disabled = false; // Enable form for editing
                 }
             });
         };
 
-        app.search = function (searchKeyword, number) {
 
-        };
-
-        app.clear = function () {
-
-        };
     });

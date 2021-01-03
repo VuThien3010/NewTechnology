@@ -7,7 +7,8 @@ var validate = require('mongoose-validator');
 var nameValidator = [
     validate({
         validator: 'matches',
-        arguments: /^(([a-zA-Z]{2,20})+[ ]+([a-zA-Z]{2,20})+)+$/,
+        arguments: /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\W|_]+$/,
+        // /^(([a-zA-Z]{2,20})+[ ]+([a-zA-Z]{2,20})+)+$/
         message: 'Must be at least 3 charaters, max 30, no speical characters or numbers, must have space in between name.'
     }),
     validate({

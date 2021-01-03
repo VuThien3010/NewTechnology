@@ -7,7 +7,8 @@
     <!--Name-->
     <label>Name:</label>
     <input class="form-control" type="text" name="name" placeholder="Please enter name" ng-model="register.regData.name"
-      ng-pattern="/^(([a-zA-Z]{3,20})+[ ]+([a-zA-Z]{3,20})+)+$/" ng-minlength="3" ng-maxlength="20" required />
+      ng-pattern="^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\W|_]+$" ng-minlength="3" ng-maxlength="20" required />
+      <!-- /^(([a-zA-Z]{3,20})+[ ]+([a-zA-Z]{3,20})+)+$/ -->
     <p class="help-block"
       ng-show="(!regForm.name.$pristine && regForm.name.$error.required) || (regForm.$submitted && regForm.name.$error.required)">
       This field is required
